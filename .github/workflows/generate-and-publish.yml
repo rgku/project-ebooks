@@ -1,0 +1,52 @@
+name: Generate & Publish Ebooks
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: python -m pytest tests/ -v
+
+      - name: Generate & publish
+        run: python scripts/main.py
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GUMROAD_TOKEN_EN: ${{ secrets.GUMROAD_TOKEN_EN }}
+          GUMROAD_TOKEN_PT: ${{ secrets.GUMROAD_TOKEN_PT }}
+          GUMROAD_PRODUCT_ID_EN: ${{ secrets.GUMROAD_PRODUCT_ID_EN }}
+          GUMROAD_PRODUCT_ID_PT: ${{ secrets.GUMROAD_PRODUCT_ID_PT }}
+
+      - name: Commit state
+        run: |
+          git config --local user.email "ebooks-bot@users.noreply.github.com"
+          git config --local user.name "Ebooks Bot"
+          git add state.json
+          git diff --cached --quiet || git commit -m "chore: update generation state [skip ci]"
+          git push
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ebooks
+          path: output/
