@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 from config import Niche
-from pdf_gen import _add_cover, _add_title_page, EbookPDF
+from pdf_gen import _add_cover, _add_title_page, EbookPDF, _sanitize
 
 
 def test_ebookpdf_init():
@@ -44,3 +44,18 @@ def test_header_footer_not_on_first_pages():
     assert pdf.page_no() == 1
     pdf.add_page()
     assert pdf.page_no() == 2
+
+
+def test_sanitize_preserves_portuguese():
+    text = "Ação, coração, idéia, você, não, ção"
+    result = _sanitize(text)
+    assert result == text
+
+
+def test_sanitize_replaces_em_dash():
+    result = _sanitize("Hello\u2014world")
+    assert "--" in result
+
+def test_sanitize_preserves_english():
+    result = _sanitize("Hello World! How are you?")
+    assert result == "Hello World! How are you?"

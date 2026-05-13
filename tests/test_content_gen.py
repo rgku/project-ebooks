@@ -4,35 +4,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 from content_gen import validate_content
 
-_VALID_BODY_EN = "\n\n".join([
-    "Intro text with enough content to pass the minimum length validation threshold.",
-    "First section with substantial content that adds to the total character count.",
-    "Second section continues with more meaningful text for padding purposes.",
-    "Third section ensures we reach the minimum length requirement easily.",
-    "Fourth section adding even more text to make sure validation passes.",
-    "Fifth section wrapping up the main body with plenty of words here.",
-    "Wrapping up everything nicely with a conclusion summary paragraph.",
-]) + "\n\n"
-
-_VALID_BODY_PT = "\n\n".join([
-    "Texto de introdução com conteúdo suficiente para passar a validação.",
-    "Primeira seção com conteúdo substancial para aumentar a contagem.",
-    "Segunda seção continua com mais texto significativo de preenchimento.",
-    "Terceira seção garante que atingimos o tamanho mínimo facilmente.",
-    "Quarta seção adicionando ainda mais texto para passar validação.",
-    "Quinta seção finalizando o corpo principal com muitas palavras aqui.",
-    "Finalizando tudo com um parágrafo de conclusão bem resumido.",
-]) + "\n\n"
+_BODY_PAD = "paragraph " * 200  # ~2000 chars per section
+_VALID_BODY_EN = "\n\n".join([_BODY_PAD] * 10) + "\n\n"
+_VALID_BODY_PT = "\n\n".join([_BODY_PAD] * 10) + "\n\n"
 
 
 def test_validate_content_english_valid():
-    content = _make_content_en("Some padding text to ensure we reach the minimum length threshold for this test content.")
+    content = _make_content_en(_BODY_PAD)
     errors = validate_content(content, "en")
     assert errors == [], f"Expected no errors, got: {errors}"
 
 
 def test_validate_content_portuguese_valid():
-    content = _make_content_pt("Texto de preenchimento para garantir que atingimos o tamanho mínimo necessário para passar.")
+    content = _make_content_pt(_BODY_PAD)
     errors = validate_content(content, "pt")
     assert errors == [], f"Expected no errors, got: {errors}"
 
@@ -51,10 +35,20 @@ def _make_content_en(body: str) -> str:
         body,
         "## Building Lasting Habits",
         body,
+        "## Social Connection",
+        body,
+        "## Mindful Living",
+        body,
+        "## Advanced Strategies",
+        body,
+        "## Troubleshooting Guide",
+        body,
         "## Conclusion",
         body,
         "## Next Steps",
-        "- Step one\n- Step two\n- Step three\n- Step four\n- Step five",
+        "- Step one\n- Step two\n- Step three\n- Step four\n- Step five\n- Step six\n- Step seven\n- Step eight",
+        "## Further Reading",
+        "- Book 1\n- Book 2\n- Book 3\n- Podcast 1",
     ]
     return "\n\n".join(parts)
 
@@ -73,10 +67,20 @@ def _make_content_pt(body: str) -> str:
         body,
         "## Construindo Hábitos Duradouros",
         body,
+        "## Conexão Social",
+        body,
+        "## Vida Consciente",
+        body,
+        "## Estratégias Avançadas",
+        body,
+        "## Guia de Solução de Problemas",
+        body,
         "## Conclusão",
         body,
         "## Próximos Passos",
-        "- Passo um\n- Passo dois\n- Passo três\n- Passo quatro\n- Passo cinco",
+        "- Passo um\n- Passo dois\n- Passo três\n- Passo quatro\n- Passo cinco\n- Passo seis\n- Passo sete\n- Passo oito",
+        "## Leitura Complementar",
+        "- Livro 1\n- Livro 2\n- Livro 3\n- Podcast 1",
     ]
     return "\n\n".join(parts)
 
@@ -84,8 +88,8 @@ def _make_content_pt(body: str) -> str:
 def test_validate_content_missing_sections():
     content = "## Introduction\n\nToo short, no sections.\n"
     errors = validate_content(content, "en")
-    assert "Missing ## Conclusion" in errors
-    assert "Missing ## Next Steps" in errors
+    assert "Missing Conclusion section" in errors
+    assert "Missing Next Steps section" in errors
     assert any("Too few sections" in e for e in errors)
 
 
@@ -98,28 +102,48 @@ def test_validate_content_too_short():
 def test_validate_content_portuguese_missing():
     content = "## Introdução\n\nSó introdução.\n"
     errors = validate_content(content, "pt")
-    assert "Missing ## Conclusão" in errors
-    assert "Missing ## Próximos Passos" in errors
+    assert "Missing Conclusão section" in errors
+    assert "Missing Próximos Passos section" in errors
 
 
 def test_validate_content_min_sections():
     content = "\n\n".join([
         "## Introduction",
-        "padding" * 50,
+        "padding " * 500,
         "## Section 1",
-        "padding" * 50,
+        "padding " * 500,
         "## Section 2",
-        "padding" * 50,
+"padding " * 500,
+        "## Section 2",
+        "padding " * 500,
         "## Section 3",
-        "padding" * 50,
+        "padding " * 500,
         "## Section 4",
-        "padding" * 50,
+        "padding " * 500,
         "## Section 5",
-        "padding" * 50,
+        "padding " * 500,
+        "## Section 6",
+        "padding " * 500,
+        "## Section 7",
+        "padding " * 500,
         "## Conclusion",
-        "padding" * 50,
+        "padding " * 500,
         "## Next Steps",
-        "padding" * 50,
+        "padding " * 500,
+        "## Further Reading",
+        "padding " * 500,
+        "## Section 4",
+        "padding " * 200,
+        "## Section 5",
+        "padding " * 200,
+        "## Section 6",
+        "padding " * 200,
+        "## Section 7",
+        "padding " * 200,
+        "## Conclusion",
+        "padding " * 200,
+        "## Next Steps",
+        "padding " * 200,
     ])
     errors = validate_content(content, "en")
     assert errors == [], f"Expected no errors, got: {errors}"

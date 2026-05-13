@@ -33,14 +33,13 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GUMROAD_TOKEN_EN: ${{ secrets.GUMROAD_TOKEN_EN }}
           GUMROAD_TOKEN_PT: ${{ secrets.GUMROAD_TOKEN_PT }}
-          GUMROAD_PRODUCT_ID_EN: ${{ secrets.GUMROAD_PRODUCT_ID_EN }}
-          GUMROAD_PRODUCT_ID_PT: ${{ secrets.GUMROAD_PRODUCT_ID_PT }}
+          NOTIFICATION_WEBHOOK_URL: ${{ secrets.NOTIFICATION_WEBHOOK_URL }}
 
       - name: Commit state
         run: |
           git config --local user.email "ebooks-bot@users.noreply.github.com"
           git config --local user.name "Ebooks Bot"
-          git add state.json
+          git add state.db
           git diff --cached --quiet || git commit -m "chore: update generation state [skip ci]"
           git push
 
