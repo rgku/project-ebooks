@@ -264,7 +264,7 @@ PRICE_PT_BRL = 997
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 OPENROUTER_TEXT_MODEL = "deepseek/deepseek-chat"
-OPENROUTER_IMAGE_MODEL = "black-forest-labs/flux-schnell"  # no image models available on account, fallback used
+OPENROUTER_IMAGE_MODEL = "google/gemini-2.5-flash-image"  # no image models available on account, fallback used
 MAX_TOKENS = 32768
 TEMP = 0.7
 
