@@ -68,8 +68,21 @@ def _add_title_page(pdf: EbookPDF, niche: Niche):
     pdf.set_text_color(150, 150, 150)
     pdf.cell(0, 8, "project-ebooks", align="C", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
+def _convert_lists(text: str) -> str:
+    lines = text.split("\n")
+    out = []
+    for line in lines:
+        m = re.match(r"^(\s*)(\d+)\.\s+(.*)", line)
+        if m:
+            indent, num, rest = m.groups()
+            out.append(f"{indent}**{num}.** {rest}")
+        else:
+            out.append(line)
+    return "\n".join(out)
+
 def _add_content(pdf: EbookPDF, markdown_text: str):
-    html = markdown.markdown(_sanitize(markdown_text), extensions=["extra"])
+    text = _convert_lists(markdown_text)
+    html = markdown.markdown(_sanitize(text), extensions=["extra"])
     pdf.set_font(FONT, "", 10)
     pdf.set_text_color(44, 44, 44)
     pdf.write_html(html)
