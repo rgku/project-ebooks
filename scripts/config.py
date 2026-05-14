@@ -259,8 +259,8 @@ NICHES_PT: List[Niche] = [
     ),
 ]
 
-PRICE_EN_USD = 499
-PRICE_PT_BRL = 997
+PRICE_EN_EUR = 399
+PRICE_PT_EUR = 199
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 OPENROUTER_TEXT_MODEL = "deepseek/deepseek-chat"
@@ -282,14 +282,14 @@ MARKETS = [
     {
         "name": "en",
         "niches": NICHES_EN,
-        "price": PRICE_EN_USD,
-        "currency": "usd",
+        "price": PRICE_EN_EUR,
+        "currency": "eur",
     },
     {
         "name": "pt",
         "niches": NICHES_PT,
-        "price": PRICE_PT_BRL,
-        "currency": "brl",
+        "price": PRICE_PT_EUR,
+        "currency": "eur",
     },
 ]
 
