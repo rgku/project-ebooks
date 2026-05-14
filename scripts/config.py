@@ -193,7 +193,7 @@ NICHES_PT: List[Niche] = [
         subtitle="Acalme Sua Mente, Viva Melhor",
         lang="pt",
         cover_keywords="mente calma paz meditacao natureza tranquilidade bem-estar equilibrio",
-        content_brief="Um guia pratico para controlar a ansiedade no dia a dia. Cobre tecnicas de respiracao, reestruturacao cognitiva, mindfulness, organizacao da rotina e quando buscar ajuda profissional. Abordagem pratica adaptada a realidade brasileira.",
+        content_brief="Um guia pratico para controlar a ansiedade no dia a dia. Cobre tecnicas de respiracao, reestruturacao cognitiva, mindfulness, organizacao da rotina, quando buscar ajuda profissional, relaxamento muscular progressivo e estrategias para lidar com ataques de panico. Abordagem pratica adaptada a realidade brasileira.",
         color1="#831843",
         color2="#DB2777",
     ),
