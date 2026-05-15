@@ -34,12 +34,14 @@ def _make_market():
 @patch("main.cover_ai.generate_cover")
 @patch("main.pdf_gen.generate_pdf")
 @patch("main.epub_gen.generate_epub")
+@patch("main.lemonsqueezy_publisher.publish")
 @patch("main.publisher.publish")
-def test_generate_market_success(mock_publish, mock_epub, mock_pdf, mock_cover, mock_content, mock_desc, mock_mark, mock_pick):
+def test_generate_market_success(mock_pub, mock_ls, mock_epub, mock_pdf, mock_cover, mock_content, mock_desc, mock_mark, mock_pick):
     mock_pick.return_value = "test-niche"
     mock_desc.return_value = "Test commercial description."
     mock_content.return_value = "## Introduction\n\nContent.\n\n## Section 1\n\nBody.\n\n## Section 2\n\nBody.\n\n## Section 3\n\nBody.\n\n## Section 4\n\nBody.\n\n## Section 5\n\nBody.\n\n## Conclusion\n\nDone.\n\n## Next Steps\n\n- One\n- Two\n- Three\n- Four\n- Five\n\n"
-    mock_publish.return_value = True
+    mock_pub.return_value = True
+    mock_ls.return_value = "https://various-ebooks.lemonsqueezy.com/checkout/buy/test-ebook-title-here"
 
     market = _make_market()
     st = {"last_generated": None}
@@ -53,7 +55,7 @@ def test_generate_market_success(mock_publish, mock_epub, mock_pdf, mock_cover, 
     mock_cover.assert_called_once()
     mock_pdf.assert_called_once()
     mock_epub.assert_called_once()
-    mock_publish.assert_called_once()
+    mock_pub.assert_called_once()
 
 
 @patch("main.state.pick_next_niche")

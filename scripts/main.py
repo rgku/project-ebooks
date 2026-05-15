@@ -17,6 +17,8 @@ import epub_gen
 import notifier
 import pdf_gen
 import publisher
+import lemonsqueezy_publisher
+import hotmart_publisher
 import state
 
 
@@ -62,6 +64,17 @@ def generate_market(market: dict, st: dict) -> tuple[bool, dict]:
         analytics.track_published(name, niche.id, niche.title, price, currency)
         notifier.send_notification("Ebook Published", f"{niche.title} ({price/100:.2f} {currency.upper()})", True)
         logger.info(f"[{name}] Done: {niche.id}")
+
+        if name == "en":
+            checkout_url = lemonsqueezy_publisher.publish(niche.title)
+            if checkout_url:
+                logger.info(f"[LS] {niche.title}: {checkout_url}")
+
+        if name == "pt":
+            hm_url = hotmart_publisher.publish(niche.title)
+            if hm_url:
+                logger.info(f"[Hotmart] {niche.title}: {hm_url}")
+
         return True, st
 
     notifier.send_notification("Ebook Skipped", f"{niche.title} - publish not configured", False)
