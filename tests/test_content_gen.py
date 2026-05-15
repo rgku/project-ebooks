@@ -2,7 +2,9 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from content_gen import validate_content
+from unittest.mock import patch
+from content_gen import validate_content, generate_description
+from config import Niche
 
 _BODY_PAD = "paragraph " * 200  # ~2000 chars per section
 _VALID_BODY_EN = "\n\n".join([_BODY_PAD] * 10) + "\n\n"
@@ -147,3 +149,21 @@ def test_validate_content_min_sections():
     ])
     errors = validate_content(content, "en")
     assert errors == [], f"Expected no errors, got: {errors}"
+
+
+@patch("content_gen.generate_text")
+def test_generate_description_en(mock_gen):
+    mock_gen.return_value = "A practical guide to transforming your mornings."
+    niche = Niche(id="test", title="Test Title", subtitle="Test Sub", lang="en", cover_keywords="test", content_brief="test brief", color1="#000", color2="#fff")
+    desc = generate_description(niche)
+    assert "transforming your mornings" in desc
+    assert desc == mock_gen.return_value
+
+
+@patch("content_gen.generate_text")
+def test_generate_description_pt(mock_gen):
+    mock_gen.return_value = "Um guia pratico para transformar suas manhas."
+    niche = Niche(id="test", title="Test Title", subtitle="Test Sub", lang="pt", cover_keywords="teste", content_brief="teste breve", color1="#000", color2="#fff")
+    desc = generate_description(niche)
+    assert "transformar suas manhas" in desc
+    assert desc == mock_gen.return_value

@@ -53,7 +53,8 @@ def generate_market(market: dict, st: dict) -> tuple[bool, dict]:
 
     price = market["price"]
     currency = market["currency"]
-    pub_ok = publisher.publish(name, pdf_path, niche.title, price, currency)
+    desc = content_gen.generate_description(niche)
+    pub_ok = publisher.publish(name, pdf_path, niche.title, price, currency, description=desc, niche_title=niche.title)
 
     if pub_ok:
         state.mark_generated(name, niche.id)

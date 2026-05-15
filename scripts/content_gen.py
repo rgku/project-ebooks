@@ -16,12 +16,12 @@ SUBTITLE: {subtitle}
 TOPIC: {content_brief}
 
 CRITICAL: This ebook MUST be at least 5000 words. 7000-10000 words is ideal.
-You need 12-16 main content sections to reach this length.
+You need 14-18 main content sections to reach this length.
 Each section must have 5-10 detailed paragraphs with deep practical content.
 
 STRUCTURE (strict):
 - Start with: ## Introduction (5+ paragraphs — hook, who this is for, what they'll gain)
-- Then 12-16 sections using: ## Section Title (each 6+ paragraphs)
+- Then 14-18 sections using: ## Section Title (each 6+ paragraphs)
   For each section include: core concept, step-by-step guidance, practical example, common mistakes, pro tips
 - End with: ## Conclusion (4+ paragraphs — summarize, reinforce key message, call to action)
 - Then: ## Next Steps with 8-12 detailed actionable bullet points
@@ -42,12 +42,12 @@ SUBTÍTULO: {subtitle}
 TÓPICO: {content_brief}
 
 CRÍTICO: Este ebook deve ter PELO MENOS 5000 palavras. 7000-10000 palavras é o ideal.
-Você precisa de 12-16 seções principais de conteúdo para atingir este comprimento.
+Você precisa de 14-18 seções principais de conteúdo para atingir este comprimento.
 Cada seção deve ter 5-10 parágrafos detalhados com conteúdo prático profundo.
 
 ESTRUTURA (rigoroso):
 - Comece com: ## Introdução (5+ parágrafos — gancho, para quem é, o que vão aprender)
-- Então 12-16 seções usando: ## Título da Seção (cada 6+ parágrafos)
+- Então 14-18 seções usando: ## Título da Seção (cada 6+ parágrafos)
   Para cada seção inclua: conceito central, passo a passo, exemplo prático, erros comuns, dicas de expert
 - Termine com: ## Conclusão (4+ parágrafos — resumo, reforço da mensagem, chamada para ação)
 - Então: ## Próximos Passos com 8-12 itens detalhados e acionáveis
@@ -92,10 +92,33 @@ def validate_content(content: str, lang: str) -> list[str]:
             errors.append("Missing Próximos Passos section")
 
     sections = re.findall(r"^## ", content, re.MULTILINE)
-    if len(sections) < 6:
-        errors.append(f"Too few sections ({len(sections)}, need >= 6)")
+    if len(sections) < 10:
+        errors.append(f"Too few sections ({len(sections)}, need >= 10)")
 
     return errors
+
+
+DESCRIPTION_PROMPT_EN = """Write a compelling 2-3 sentence commercial description for an ebook that will be sold on Gumroad.
+Title: {title}
+Subtitle: {subtitle}
+Topic: {content_brief}
+Write in a persuasive, benefit-driven tone. No markdown. No line breaks. Just plain text."""
+
+DESCRIPTION_PROMPT_PT = """Escreva uma descrição comercial convincente de 2-3 frases para um ebook que será vendido no Gumroad.
+Título: {title}
+Subtítulo: {subtitle}
+Tópico: {content_brief}
+Escreva em tom persuasivo e focado em benefícios. Sem markdown. Sem quebras de linha. Apenas texto simples."""
+
+
+def generate_description(niche: Niche) -> str:
+    if niche.lang == "en":
+        prompt = DESCRIPTION_PROMPT_EN.format(title=niche.title, subtitle=niche.subtitle, content_brief=niche.content_brief)
+        system = SYSTEM_PROMPT_EN
+    else:
+        prompt = DESCRIPTION_PROMPT_PT.format(title=niche.title, subtitle=niche.subtitle, content_brief=niche.content_brief)
+        system = SYSTEM_PROMPT_PT
+    return generate_text(prompt, system_prompt=system, max_tokens=500).strip()
 
 
 def generate_content(niche: Niche) -> str:
