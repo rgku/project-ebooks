@@ -47,7 +47,9 @@ REQUIRED ELEMENTS throughout:
 - Include practical exercises or reflection prompts
 - Conversational but authoritative tone, like a trusted coach
 - No commentary outside the markdown
-- Open with a compelling story — never start with "In this chapter" or a definition"""
+- Open with a compelling story — never start with "In this chapter" or a definition
+- **Include specific statistics, percentages, and data points** — cite them like "according to a 2024 study" or "research shows that 73% of people..." to add external credibility
+- Use varied paragraph lengths — some short (2-3 sentences for impact), some longer (8-10 sentences for depth)"""
 
 CONTENT_PROMPT_PT = """Escreva um ebook completo em Português com EXATAMENTE esta estrutura.
 TÍTULO: {title}
@@ -77,7 +79,9 @@ ELEMENTOS OBRIGATÓRIOS em todo o texto:
 - Inclua exercícios práticos ou prompts de reflexão
 - Tom conversacional mas autoritativo, como um coach de confiança
 - Sem comentários fora do markdown
-- Abra com uma história convincente — nunca comece com "Neste capítulo" ou uma definição"""
+- Abra com uma história convincente — nunca comece com "Neste capítulo" ou uma definição
+- **Inclua estatísticas, porcentagens e dados específicos** — cite como "de acordo com um estudo de 2024" ou "pesquisas mostram que 73% das pessoas..." para credibilidade externa
+- Use parágrafos de comprimento variado — alguns curtos (2-3 frases para impacto), outros mais longos (8-10 frases para profundidade)"""
 
 def _find_section(content: str, keywords: list[str]) -> bool:
     for h2 in re.findall(r"^## (.+)$", content, re.MULTILINE):
@@ -223,6 +227,72 @@ Semana 4 — Maestria e Automação: Estas práticas devem agora parecer naturai
     return content
 
 
+def _burstify(content: str) -> str:
+    import random
+    paragraphs = content.split("\n\n")
+    result = []
+    for para in paragraphs:
+        stripped = para.strip()
+        if not stripped or stripped.startswith("## ") or stripped.startswith("- ") or stripped.startswith("* "):
+            result.append(para)
+            continue
+        sentences = re.split(r'(?<=[.!?])\s+', stripped)
+        if len(sentences) >= 7 and random.random() < 0.3:
+            split_idx = random.randint(max(2, len(sentences) // 3), min(len(sentences) - 3, len(sentences) * 2 // 3))
+            result.append(" ".join(sentences[:split_idx]))
+            result.append("")
+            second = sentences[split_idx:]
+            if len(second) >= 6 and random.random() < 0.15:
+                split2 = len(second) // 2
+                result.append(" ".join(second[:split2]))
+                result.append("")
+                result.append(" ".join(second[split2:]))
+            else:
+                result.append(" ".join(second))
+        else:
+            result.append(para)
+    return "\n\n".join(result)
+
+
+def _append_glossary(content: str, lang: str) -> str:
+    bold_terms = re.findall(r'\*\*(.+?)\*\*', content)
+    candidates = []
+    for term in bold_terms:
+        words = term.split()
+        if 1 <= len(words) <= 5:
+            is_clean = not any(w.isdigit() for w in words) and not term.startswith("__")
+            if is_clean and term[0].isupper():
+                candidates.append(term)
+    seen = set()
+    unique = []
+    for c in candidates:
+        key = c.lower().rstrip("s")
+        if key not in seen:
+            seen.add(key)
+            unique.append(c)
+    unique = unique[:10]
+
+    if len(unique) < 4:
+        return content
+
+    if lang == "en":
+        glossary = "\n\n## Glossary of Key Terms\n\n"
+        for term in unique:
+            glossary += f"- **{term}**: See main discussion in relevant section\n"
+    else:
+        glossary = "\n\n## Glossário de Termos-Chave\n\n"
+        for term in unique:
+            glossary += f"- **{term}**: Veja a discussão principal na seção relevante\n"
+
+    match = list(re.finditer(r"^## (Further Reading|Leitura Complementar|Continue Learning|Books & Tools|Recursos Recomendados|Continue Aprendendo)", content, re.MULTILINE))
+    if match:
+        pos = match[0].start()
+        content = content[:pos] + glossary + content[pos:]
+    else:
+        content += glossary
+    return content
+
+
 def _de_ai(content: str, lang: str) -> str:
     content = _rename_headers(content, lang)
     content = _reduce_bold(content, ratio=0.3)
@@ -231,6 +301,8 @@ def _de_ai(content: str, lang: str) -> str:
     content = _add_author_note(content, lang)
     content = _append_worksheet(content, lang)
     content = _append_action_plan(content, lang)
+    content = _burstify(content)
+    content = _append_glossary(content, lang)
     return content
 
 
