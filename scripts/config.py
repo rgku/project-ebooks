@@ -288,7 +288,7 @@ PRICE_EN_EUR = 399
 PRICE_PT_EUR = 199
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-OPENROUTER_TEXT_MODEL = "deepseek/deepseek-chat"
+OPENROUTER_TEXT_MODEL = "google/gemini-2.5-flash"
 OPENROUTER_IMAGE_MODEL = "google/gemini-2.5-flash-image"  # no image models available on account, fallback used
 MAX_TOKENS = 65536
 TEMP = 0.7

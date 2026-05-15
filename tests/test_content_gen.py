@@ -6,7 +6,7 @@ from unittest.mock import patch
 from content_gen import validate_content, generate_description
 from config import Niche
 
-_BODY_PAD = "paragraph " * 200  # ~2000 chars per section
+_BODY_PAD = "paragraph " * 400  # ~4000 chars per section
 _VALID_BODY_EN = "\n\n".join([_BODY_PAD] * 10) + "\n\n"
 _VALID_BODY_PT = "\n\n".join([_BODY_PAD] * 10) + "\n\n"
 
@@ -41,6 +41,10 @@ def _make_content_en(body: str) -> str:
         body,
         "## Mindful Living",
         body,
+        "## Daily Practices",
+        body,
+        "## Long-Term Growth",
+        body,
         "## Advanced Strategies",
         body,
         "## Troubleshooting Guide",
@@ -72,6 +76,10 @@ def _make_content_pt(body: str) -> str:
         "## Conexão Social",
         body,
         "## Vida Consciente",
+        body,
+        "## Práticas Diárias",
+        body,
+        "## Crescimento a Longo Prazo",
         body,
         "## Estratégias Avançadas",
         body,

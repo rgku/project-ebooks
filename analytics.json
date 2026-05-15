@@ -1,10 +1,10 @@
 {
-  "total_generated": 28,
-  "total_published": 14,
+  "total_generated": 38,
+  "total_published": 19,
   "markets": {
     "en": {
-      "generated": 28,
-      "published": 14,
+      "generated": 38,
+      "published": 19,
       "history": [
         {
           "time": "2026-05-13T15:27:56.920394",
@@ -282,6 +282,106 @@
         },
         {
           "time": "2026-05-15T15:07:34.423393",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T15:24:15.234375",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T15:24:23.153351",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "price": 499,
+          "currency": "usd",
+          "event": "published"
+        },
+        {
+          "time": "2026-05-15T15:24:23.569184",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T15:28:54.170920",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T15:28:58.614138",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "price": 499,
+          "currency": "usd",
+          "event": "published"
+        },
+        {
+          "time": "2026-05-15T15:28:59.014578",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T15:29:26.987919",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T15:29:30.960484",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "price": 499,
+          "currency": "usd",
+          "event": "published"
+        },
+        {
+          "time": "2026-05-15T15:29:31.381493",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T15:58:49.404687",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T15:58:49.410791",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "price": 499,
+          "currency": "usd",
+          "event": "published"
+        },
+        {
+          "time": "2026-05-15T15:58:49.798294",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T17:30:17.584198",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "event": "generated"
+        },
+        {
+          "time": "2026-05-15T17:30:17.587126",
+          "niche": "test-niche",
+          "title": "Test Ebook Title Here",
+          "price": 499,
+          "currency": "usd",
+          "event": "published"
+        },
+        {
+          "time": "2026-05-15T17:30:17.965056",
           "niche": "test-niche",
           "title": "Test Ebook Title Here",
           "event": "generated"

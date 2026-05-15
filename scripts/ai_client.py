@@ -23,7 +23,7 @@ def generate_text(prompt: str, system_prompt: str | None = None, max_tokens: int
             "max_tokens": max_tokens or config.MAX_TOKENS,
             "temperature": config.TEMP,
         },
-        timeout=120,
+        timeout=240,
     )
     resp.raise_for_status()
     data = resp.json()

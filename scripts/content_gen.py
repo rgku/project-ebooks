@@ -5,7 +5,7 @@ from config import Niche
 from ai_client import generate_text
 
 MAX_RETRIES = 3
-MIN_CONTENT_LENGTH = 20000
+MIN_CONTENT_LENGTH = 30000
 
 SYSTEM_PROMPT_EN = """You are a bestselling ebook ghostwriter. Write exceptionally comprehensive, thorough, and value-packed ebooks. Each ebook must feel like a complete course — rich with frameworks, case studies, worksheets, troubleshooting guides, and advanced strategies. The reader must feel they got 10x the value of what they paid. Every claim needs evidence, every technique needs a step-by-step walkthrough, and every concept needs a real-world example.
 
@@ -24,17 +24,17 @@ TITLE: {title}
 SUBTITLE: {subtitle}
 TOPIC: {content_brief}
 
-CRITICAL: This ebook MUST be at least 8000 words. 10000-15000 words is ideal.
-You need 18-25 main content sections to reach this length.
-Each section must have 6-12 detailed paragraphs with deep practical content.
+CRITICAL: This ebook MUST be at least 15000 words. 20000-25000 words is ideal.
+You need 25-35 main content sections to reach this length.
+Each section must have 10-15 detailed paragraphs with deep practical content.
 
 STRUCTURE (strict):
-- Start with: ## Introduction (6+ paragraphs — compelling story or scenario, never a definition)
-- Then 18-25 sections using: ## Section Title (each 6+ paragraphs)
+- Start with: ## Introduction (10+ paragraphs — compelling story or scenario, never a definition)
+- Then 25-35 sections using: ## Section Title (each 8-12 paragraphs)
   For each section include: core concept, step-by-step guidance, specific real-world example with names/numbers, common mistakes, pro tips
-- End with: ## Conclusion (5+ paragraphs — summarize, reinforce key message, personal reflection)
-- Then: ## Next Steps with 10-15 detailed actionable bullet points
-- Then: ## Further Reading with 5-7 resource recommendations
+- End with: ## Conclusion (8+ paragraphs — summarize, reinforce key message, personal reflection)
+- Then: ## Next Steps with 15-20 detailed actionable bullet points
+- Then: ## Further Reading with 7-10 resource recommendations
 
 REQUIRED ELEMENTS throughout:
 - Use **bold** sparingly — only for absolute key terms
@@ -56,17 +56,17 @@ TÍTULO: {title}
 SUBÍTULO: {subtitle}
 TÓPICO: {content_brief}
 
-CRÍTICO: Este ebook deve ter PELO MENOS 8000 palavras. 10000-15000 palavras é o ideal.
-Você precisa de 18-25 seções principais de conteúdo para atingir este comprimento.
-Cada seção deve ter 6-12 parágrafos detalhados com conteúdo prático profundo.
+CRÍTICO: Este ebook deve ter PELO MENOS 15000 palavras. 20000-25000 palavras é o ideal.
+Você precisa de 25-35 seções principais de conteúdo para atingir este comprimento.
+Cada seção deve ter 8-12 parágrafos detalhados com conteúdo prático profundo.
 
 ESTRUTURA (rigoroso):
-- Comece com: ## Introdução (6+ parágrafos — história ou cenário convincente, nunca uma definição)
-- Então 18-25 seções usando: ## Título da Seção (cada 6+ parágrafos)
+- Comece com: ## Introdução (10+ parágrafos — história ou cenário convincente, nunca uma definição)
+- Então 25-35 seções usando: ## Título da Seção (cada 8-12 parágrafos)
   Para cada seção inclua: conceito central, passo a passo, exemplo real específico com nomes/números, erros comuns, dicas de expert
-- Termine com: ## Conclusão (5+ parágrafos — resumo, reforço da mensagem, reflexão pessoal)
-- Então: ## Próximos Passos com 10-15 itens detalhados e acionáveis
-- Então: ## Leitura Complementar com 5-7 recomendações de recursos
+- Termine com: ## Conclusão (8+ parágrafos — resumo, reforço da mensagem, reflexão pessoal)
+- Então: ## Próximos Passos com 15-20 itens detalhados e acionáveis
+- Então: ## Leitura Complementar com 7-10 recomendações de recursos
 
 ELEMENTOS OBRIGATÓRIOS em todo o texto:
 - Use **negrito** moderadamente — apenas para termos realmente chave
@@ -113,8 +113,8 @@ def validate_content(content: str, lang: str) -> list[str]:
             errors.append("Missing Próximos Passos section")
 
     sections = re.findall(r"^## ", content, re.MULTILINE)
-    if len(sections) < 12:
-        errors.append(f"Too few sections ({len(sections)}, need >= 12)")
+    if len(sections) < 15:
+        errors.append(f"Too few sections ({len(sections)}, need >= 15)")
 
     return errors
 
